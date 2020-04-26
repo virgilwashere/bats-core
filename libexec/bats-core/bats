@@ -48,8 +48,7 @@ expand_link() {
   [[ "$1" =~ ^/ ]] || path="."
 
   # Process each component.
-  for part in "${parts[@]}"
-  do
+  for part in "${parts[@]}"; do
     # All components must exist.
     [ -e "$path/$part" ] || return 1
 
@@ -119,41 +118,41 @@ fi
 
 while [[ "$#" -ne 0 ]]; do
   case "$1" in
-  -h|--help)
-    version
-    usage
-    exit 0
-    ;;
-  -v|--version)
-    version
-    exit 0
-    ;;
-  -c|--count)
-    flags+=('-c')
-    ;;
-  -f|--filter)
-    shift
-    flags+=('-f' "$1")
-    ;;
-  -j|--jobs)
-    shift
-    flags+=('-j' "$1")
-    ;;
-  -r|--recursive)
-    recursive=1
-    ;;
-  -t|--tap)
-    pretty=
-    ;;
-  -p|--pretty)
-    pretty=1
-    ;;
-  -*)
-    abort "Bad command line option '$1'"
-    ;;
-  *)
-    arguments+=("$1")
-    ;;
+    -h | --help)
+      version
+      usage
+      exit 0
+      ;;
+    -v | --version)
+      version
+      exit 0
+      ;;
+    -c | --count)
+      flags+=('-c')
+      ;;
+    -f | --filter)
+      shift
+      flags+=('-f' "$1")
+      ;;
+    -j | --jobs)
+      shift
+      flags+=('-j' "$1")
+      ;;
+    -r | --recursive)
+      recursive=1
+      ;;
+    -t | --tap)
+      pretty=
+      ;;
+    -p | --pretty)
+      pretty=1
+      ;;
+    -*)
+      abort "Bad command line option '$1'"
+      ;;
+    *)
+      arguments+=("$1")
+      ;;
   esac
   shift
 done
