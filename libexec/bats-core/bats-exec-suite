@@ -15,31 +15,31 @@ abort() {
 
 while [[ "$#" -ne 0 ]]; do
   case "$1" in
-  -c)
-    count_only_flag=1
-    ;;
-  -f)
-    shift
-    filter="$1"
-    flags+=('-f' "$filter")
-    ;;
-  -j)
-    shift
-    num_jobs="$1"
-    flags+=('-j' "$num_jobs")
-    ;;
-  -T)
-    flags+=('-T')
-    ;;
-  -x)
-    flags+=('-x')
-    ;;
-  --parallel-preserve-environment)
-    bats_parallel_args=("--env" "_")
-    ;;
-  *)
-    break
-    ;;
+    -c)
+      count_only_flag=1
+      ;;
+    -f)
+      shift
+      filter="$1"
+      flags+=('-f' "$filter")
+      ;;
+    -j)
+      shift
+      num_jobs="$1"
+      flags+=('-j' "$num_jobs")
+      ;;
+    -T)
+      flags+=('-T')
+      ;;
+    -x)
+      flags+=('-x')
+      ;;
+    --parallel-preserve-environment)
+      bats_parallel_args=("--env" "_")
+      ;;
+    *)
+      break
+      ;;
   esac
   shift
 done

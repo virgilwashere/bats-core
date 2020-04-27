@@ -136,68 +136,68 @@ fi
 
 while [[ "$#" -ne 0 ]]; do
   case "$1" in
-  -h | --help)
-    version
-    usage
-    exit 0
-    ;;
-  -v | --version)
-    version
-    exit 0
-    ;;
-  -c | --count)
-    flags+=('-c')
-    ;;
-  -f | --filter)
-    shift
-    flags+=('-f' "$1")
-    ;;
-  -F | --formatter)
-    shift
-    if [[ $1 =~ ^(pretty|junit|tap)$ ]]; then
-      formatter="$1"
-    else
-      printf "Unknown formatter '%s', valid options are pretty, junit, tap\n" "$1"
-      exit 1
-    fi
-    ;;
-  -o | --output)
-    shift
-    output="$1"
-    ;;
-  -p | --pretty)
-    formatter='pretty'
-    ;;
-  -j | --jobs)
-    shift
-    flags+=('-j' "$1")
-    ;;
-  -r | --recursive)
-    recursive=1
-    ;;
-  -t | --tap)
-    formatter='tap'
-    ;;
-  -T | --timing)
-    flags+=('-T')
-    formatter_flags+=('-T')
-    ;;
-  --parallel-preserve-environment)
-    flags+=("--parallel-preserve-environment")
-    # check if parallel's env setup was run before
-    # will print on stderr and return 255 on failure
-    # suppress stdout (on success)
-    parallel --env _ echo ::: 1 >/dev/null || exit 1
-    ;;
-  --no-tempdir-cleanup)
-    tempdir_cleanup=''
-    ;;
-  -*)
-    abort "Bad command line option '$1'"
-    ;;
-  *)
-    arguments+=("$1")
-    ;;
+    -h | --help)
+      version
+      usage
+      exit 0
+      ;;
+    -v | --version)
+      version
+      exit 0
+      ;;
+    -c | --count)
+      flags+=('-c')
+      ;;
+    -f | --filter)
+      shift
+      flags+=('-f' "$1")
+      ;;
+    -F | --formatter)
+      shift
+      if [[ $1 =~ ^(pretty|junit|tap)$ ]]; then
+        formatter="$1"
+      else
+        printf "Unknown formatter '%s', valid options are pretty, junit, tap\n" "$1"
+        exit 1
+      fi
+      ;;
+    -o | --output)
+      shift
+      output="$1"
+      ;;
+    -p | --pretty)
+      formatter='pretty'
+      ;;
+    -j | --jobs)
+      shift
+      flags+=('-j' "$1")
+      ;;
+    -r | --recursive)
+      recursive=1
+      ;;
+    -t | --tap)
+      formatter='tap'
+      ;;
+    -T | --timing)
+      flags+=('-T')
+      formatter_flags+=('-T')
+      ;;
+    --parallel-preserve-environment)
+      flags+=("--parallel-preserve-environment")
+      # check if parallel's env setup was run before
+      # will print on stderr and return 255 on failure
+      # suppress stdout (on success)
+      parallel --env _ echo ::: 1 >/dev/null || exit 1
+      ;;
+    --no-tempdir-cleanup)
+      tempdir_cleanup=''
+      ;;
+    -*)
+      abort "Bad command line option '$1'"
+      ;;
+    *)
+      arguments+=("$1")
+      ;;
   esac
   shift
 done
@@ -223,7 +223,6 @@ fi
 if [[ "${#arguments[@]}" -eq 0 ]]; then
   abort 'Must specify at least one <test>'
 fi
-
 
 if [[ -n "$output" ]]; then
   if [[ ! -w "${output}" ]]; then

@@ -3,8 +3,8 @@
 set -e
 
 targets=()
-while IFS=  read -r -d $'\0'; do
-    targets+=("$REPLY")
+while IFS= read -r -d $'\0'; do
+  targets+=("$REPLY")
 done < <(
   find \
     bin/bats \
@@ -13,7 +13,7 @@ done < <(
     shellcheck.sh \
     -type f \
     -print0
-  )
+)
 
 LC_ALL=C.UTF-8 shellcheck "${targets[@]}"
 
