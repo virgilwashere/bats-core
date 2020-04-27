@@ -8,10 +8,10 @@
 
 [![Join the chat in bats-core/bats-core on gitter](https://badges.gitter.im/bats-core/bats-core.svg)][gitter]
 
-Bats is a [TAP][]-compliant testing framework for Bash.  It provides a simple
-way to verify that the UNIX programs you write behave as expected.
+Bats is a [TAP][]-compliant testing framework for Bash. It provides a simple way
+to verify that the UNIX programs you write behave as expected.
 
-[TAP]: https://testanything.org
+[tap]: https://testanything.org
 
 A Bats test file is a Bash script with special syntax for defining test cases.
 Under the hood, each test case is just a function with a description.
@@ -43,33 +43,33 @@ each line is an assertion of truth.
 <!-- toc -->
 
 - [Installation](#installation)
-  * [Supported Bash versions](#supported-bash-versions)
-  * [Homebrew](#homebrew)
-  * [npm](#npm)
-  * [Installing Bats from source](#installing-bats-from-source)
-  * [Installing Bats from source onto Windows Git Bash](#installing-bats-from-source-onto-windows-git-bash)
-  * [Running Bats in Docker](#running-bats-in-docker)
-    + [Building a Docker image](#building-a-docker-image)
+  - [Supported Bash versions](#supported-bash-versions)
+  - [Homebrew](#homebrew)
+  - [npm](#npm)
+  - [Installing Bats from source](#installing-bats-from-source)
+  - [Installing Bats from source onto Windows Git Bash](#installing-bats-from-source-onto-windows-git-bash)
+  - [Running Bats in Docker](#running-bats-in-docker)
+    - [Building a Docker image](#building-a-docker-image)
 - [Usage](#usage)
-  * [Parallel Execution](#parallel-execution)
+  - [Parallel Execution](#parallel-execution)
 - [Writing tests](#writing-tests)
-  * [`run`: Test other commands](#run-test-other-commands)
-  * [`load`: Share common code](#load-share-common-code)
-  * [`skip`: Easily skip tests](#skip-easily-skip-tests)
-  * [`setup` and `teardown`: Pre- and post-test hooks](#setup-and-teardown-pre--and-post-test-hooks)
-  * [Code outside of test cases](#code-outside-of-test-cases)
-  * [File descriptor 3 (read this if Bats hangs)](#file-descriptor-3-read-this-if-bats-hangs)
-  * [Printing to the terminal](#printing-to-the-terminal)
-  * [Special variables](#special-variables)
-  * [Libraries and Add-ons](#libraries-and-add-ons)
+  - [`run`: Test other commands](#run-test-other-commands)
+  - [`load`: Share common code](#load-share-common-code)
+  - [`skip`: Easily skip tests](#skip-easily-skip-tests)
+  - [`setup` and `teardown`: Pre- and post-test hooks](#setup-and-teardown-pre--and-post-test-hooks)
+  - [Code outside of test cases](#code-outside-of-test-cases)
+  - [File descriptor 3 (read this if Bats hangs)](#file-descriptor-3-read-this-if-bats-hangs)
+  - [Printing to the terminal](#printing-to-the-terminal)
+  - [Special variables](#special-variables)
+  - [Libraries and Add-ons](#libraries-and-add-ons)
 - [Testing](#testing)
 - [Support](#support)
 - [Contributing](#contributing)
 - [Contact](#contact)
 - [Version history](#version-history)
 - [Background](#background)
-  * [What's the plan and why?](#whats-the-plan-and-why)
-  * [Why was this fork created?](#why-was-this-fork-created)
+  - [What's the plan and why?](#whats-the-plan-and-why)
+  - [Why was this fork created?](#why-was-this-fork-created)
 - [Copyright](#copyright)
 
 <!-- tocstop -->
@@ -83,9 +83,11 @@ This list is composed of platforms that Bats has been tested on and is known to
 work on without issues.
 
 - Bash versions:
+
   - Everything from `3.2.57(1)` and higher (macOS's highest version)
 
 - Operating systems:
+
   - Arch Linux
   - Alpine Linux
   - Ubuntu Linux
@@ -132,14 +134,13 @@ install Bats into `/usr/local`,
     $ cd bats-core
     $ ./install.sh /usr/local
 
-__Note:__ You may need to run `install.sh` with `sudo` if you do not have
+**Note:** You may need to run `install.sh` with `sudo` if you do not have
 permission to write to the installation prefix.
 
 ### Installing Bats from source onto Windows Git Bash
 
-Check out a copy of the Bats repository and install it to `$HOME`. This
-will place the `bats` executable in `$HOME/bin`, which should already be
-in `$PATH`.
+Check out a copy of the Bats repository and install it to `$HOME`. This will
+place the `bats` executable in `$HOME/bin`, which should already be in `$PATH`.
 
     $ git clone https://github.com/bats-core/bats-core.git
     $ cd bats-core
@@ -159,8 +160,8 @@ Check out a copy of the Bats repository, then build a container image:
     $ cd bats-core
     $ docker build --tag bats/bats:latest .
 
-This creates a local Docker image called `bats/bats:latest` based on [Alpine
-Linux](https://github.com/gliderlabs/docker-alpine/blob/master/docs/usage.md)
+This creates a local Docker image called `bats/bats:latest` based on
+[Alpine Linux](https://github.com/gliderlabs/docker-alpine/blob/master/docs/usage.md)
 (to push to private registries, tag it with another organisation, e.g.
 `my-org/bats:latest`).
 
@@ -175,20 +176,22 @@ to its path inside the container:
     $ docker run -it -v "$(pwd):/opt/bats" bats/bats:latest /opt/bats/test
 
 This is a minimal Docker image. If more tools are required this can be used as a
-base image in a Dockerfile using `FROM <Docker image>`.  In the future there may
-be images based on Debian, and/or with more tools installed (`curl` and `openssl`,
-for example). If you require a specific configuration please search and +1 an
-issue or [raise a new issue](https://github.com/bats-core/bats-core/issues).
+base image in a Dockerfile using `FROM <Docker image>`. In the future there may
+be images based on Debian, and/or with more tools installed (`curl` and
+`openssl`, for example). If you require a specific configuration please search
+and +1 an issue or
+[raise a new issue](https://github.com/bats-core/bats-core/issues).
 
-Further usage examples are in [the wiki](https://github.com/bats-core/bats-core/wiki/Docker-Usage-Examples).
+Further usage examples are in
+[the wiki](https://github.com/bats-core/bats-core/wiki/Docker-Usage-Examples).
 
 ## Usage
 
-Bats comes with two manual pages. After installation you can view them with `man
-1 bats` (usage manual) and `man 7 bats` (writing test files manual). Also, you
-can view the available command line options that Bats supports by calling Bats
-with the `-h` or `--help` options. These are the options that Bats currently
-supports:
+Bats comes with two manual pages. After installation you can view them with
+`man 1 bats` (usage manual) and `man 7 bats` (writing test files manual). Also,
+you can view the available command line options that Bats supports by calling
+Bats with the `-h` or `--help` options. These are the options that Bats
+currently supports:
 
 ```
 Bats x.y.z
@@ -238,26 +241,26 @@ with a check-mark next to the test's name if it passes or an "X" if it fails.
 
 If Bats is not connected to a terminal—in other words, if you run it from a
 continuous integration system, or redirect its output to a file—the results are
-displayed in human-readable, machine-parsable [TAP format][TAP].
+displayed in human-readable, machine-parsable [TAP format][tap].
 
-You can force TAP output from a terminal by invoking Bats with the `--formatter tap`
-option.
+You can force TAP output from a terminal by invoking Bats with the
+`--formatter tap` option.
 
     $ bats --formatter tap addition.bats
     1..2
     ok 1 addition using bc
     ok 2 addition using dc
 
-By combining `-T` and `--formatter junit`, it is possible
-to output junit-compatible report files.
+By combining `-T` and `--formatter junit`, it is possible to output
+junit-compatible report files.
 
     $ bats --formatter junit -T addition.bats
     1..2
     ok 1 addition using bc
     ok 2 addition using dc
 
-Test reports will be output in the executing directory, but may be placed elsewhere
-by specifying the `--output` flag.
+Test reports will be output in the executing directory, but may be placed
+elsewhere by specifying the `--output` flag.
 
     $ bats --formatter junit -T addition.bats --output /tmp
     1..2
@@ -267,9 +270,9 @@ by specifying the `--output` flag.
 ### Parallel Execution
 
 By default, Bats will execute your tests serially. However, Bats supports
-parallel execution of tests (provided you have [GNU parallel][gnu-parallel] or
-a compatible replacement installed) using the `--jobs` parameter. This can
-result in your tests completing faster (depending on your tests and the testing
+parallel execution of tests (provided you have [GNU parallel][gnu-parallel] or a
+compatible replacement installed) using the `--jobs` parameter. This can result
+in your tests completing faster (depending on your tests and the testing
 hardware).
 
 Ordering of parallised tests is not guaranteed, so this mode may break suites
@@ -277,20 +280,19 @@ with dependencies between tests (or tests that write to shared locations). When
 enabling `--jobs` for the first time be sure to re-run bats multiple times to
 identify any inter-test dependencies or non-deterministic test behaviour.
 
-If your code relies on variables from the environment, or from `setup_file()`, 
-you need to specify `--parallel-preserve-environment` as well. Note that this 
-requires running `parallel --record-env` first as a setup step as GNU Parallel 
-will refuse to run without. Only environment variables that were **not** set 
+If your code relies on variables from the environment, or from `setup_file()`,
+you need to specify `--parallel-preserve-environment` as well. Note that this
+requires running `parallel --record-env` first as a setup step as GNU Parallel
+will refuse to run without. Only environment variables that were **not** set
 during this setup step will be preserved!
 
 [gnu-parallel]: https://www.gnu.org/software/parallel/
 
 ## Writing tests
 
-Each Bats test file is evaluated _n+1_ times, where _n_ is the number of
-test cases in the file. The first run counts the number of test cases,
-then iterates over the test cases and executes each one in its own
-process.
+Each Bats test file is evaluated _n+1_ times, where _n_ is the number of test
+cases in the file. The first run counts the number of test cases, then iterates
+over the test cases and executes each one in its own process.
 
 For more details about how Bats evaluates test files, see [Bats Evaluation
 Process][bats-eval] on the wiki.
@@ -334,9 +336,9 @@ without any arguments prints usage information on the first line:
 }
 ```
 
-__Note:__ The `run` helper executes its argument(s) in a subshell, so if
-writing tests against environmental side-effects like a variable's value
-being changed, these changes will not persist after `run` completes.
+**Note:** The `run` helper executes its argument(s) in a subshell, so if writing
+tests against environmental side-effects like a variable's value being changed,
+these changes will not persist after `run` completes.
 
 ### `load`: Share common code
 
@@ -395,7 +397,7 @@ Or you can skip conditionally:
 }
 ```
 
-__Note:__ `setup` and `teardown` hooks still run for skipped tests.
+**Note:** `setup` and `teardown` hooks still run for skipped tests.
 
 ### `setup` and `teardown`: Pre- and post-test hooks
 
@@ -403,14 +405,13 @@ You can define special `setup` and `teardown` functions, which run before and
 after each test case, respectively. Use these to load fixtures, set up your
 environment, and clean up when you're done.
 
-You can also define `setup_file` and `teardown_file`, which will run once per file,
-before the first and after the last test, respectively. 
-__WARNING__ these will not be run in parallel mode!
-
+You can also define `setup_file` and `teardown_file`, which will run once per
+file, before the first and after the last test, respectively. **WARNING** these
+will not be run in parallel mode!
 
 ### Code outside of test cases
 
-You can include code in your test file outside of `@test` functions.  For
+You can include code in your test file outside of `@test` functions. For
 example, this may be useful if you want to check for dependencies and fail
 immediately if they're not present. However, any output that you print in code
 outside of `@test`, `setup` or `teardown` functions must be redirected to
@@ -421,9 +422,9 @@ TAP stream on `stdout`.
 
 Bats makes a separation between output from the code under test and output that
 forms the TAP stream (which is produced by Bats internals). This is done in
-order to produce TAP-compliant output. In the [Printing to the
-terminal](#printing-to-the-terminal) section, there are details on how to use
-file descriptor 3 to print custom text properly.
+order to produce TAP-compliant output. In the
+[Printing to the terminal](#printing-to-the-terminal) section, there are details
+on how to use file descriptor 3 to print custom text properly.
 
 A side effect of using file descriptor 3 is that, under some circumstances, it
 can cause Bats to block and execution to seem dead without reason. This can
@@ -440,7 +441,7 @@ that may launch long-running child processes**, e.g. `command_name 3>&-` .
 
 ### Printing to the terminal
 
-Bats produces output compliant with [version 12 of the TAP protocol][TAP]. The
+Bats produces output compliant with [version 12 of the TAP protocol][tap]. The
 produced TAP stream is by default piped to a pretty formatter for human
 consumption, but if Bats is called with the `-t` flag, then the TAP stream is
 directly printed to the console.
@@ -451,6 +452,7 @@ file descriptor, `&3`, that you should use to print your custom text. Here are
 some detailed guidelines to refer to:
 
 - Printing **from within a test function**:
+
   - To have text printed from within a test function you need to redirect the
     output to file descriptor 3, eg `echo 'text' >&3`. This output will become
     part of the TAP stream. You are encouraged to prepend text printed this way
@@ -470,8 +472,10 @@ some detailed guidelines to refer to:
   true as for printing with test functions.
 
 - Printing **outside test or `setup`/`teardown` functions**:
+
   - Regardless of where text is redirected to (stdout, stderr or file descriptor
-    3) text is immediately visible in the terminal.
+
+    3. text is immediately visible in the terminal.
 
   - Text printed in such a way, will disable pretty formatting. Also, it will
     make output non-compliant with the TAP spec. The reason for this is that
@@ -489,58 +493,63 @@ some detailed guidelines to refer to:
 
 There are several global variables you can use to introspect on Bats tests:
 
-* `$BATS_TEST_FILENAME` is the fully expanded path to the Bats test file.
-* `$BATS_TEST_DIRNAME` is the directory in which the Bats test file is located.
-* `$BATS_TEST_NAMES` is an array of function names for each test case.
-* `$BATS_TEST_NAME` is the name of the function containing the current test
+- `$BATS_TEST_FILENAME` is the fully expanded path to the Bats test file.
+- `$BATS_TEST_DIRNAME` is the directory in which the Bats test file is located.
+- `$BATS_TEST_NAMES` is an array of function names for each test case.
+- `$BATS_TEST_NAME` is the name of the function containing the current test
   case.
-* `$BATS_TEST_DESCRIPTION` is the description of the current test case.
-* `$BATS_TEST_NUMBER` is the (1-based) index of the current test case in the
+- `$BATS_TEST_DESCRIPTION` is the description of the current test case.
+- `$BATS_TEST_NUMBER` is the (1-based) index of the current test case in the
   test file.
-* `$BATS_TMPDIR` is the location to a directory that may be used to store
+- `$BATS_TMPDIR` is the location to a directory that may be used to store
   temporary files.
 
 ### Libraries and Add-ons
 
-Bats supports loading external assertion libraries and helpers. Those under `bats-core` are officially supported libraries (integration tests welcome!):
+Bats supports loading external assertion libraries and helpers. Those under
+`bats-core` are officially supported libraries (integration tests welcome!):
 
 - https://github.com/bats-core/bats-assert - common assertions for Bats
-- https://github.com/bats-core/bats-support - supporting library for Bats test helpers
-- https://github.com/bats-core/bats-detik - e2e tests of applications in K8s environments
+- https://github.com/bats-core/bats-support - supporting library for Bats test
+  helpers
+- https://github.com/bats-core/bats-detik - e2e tests of applications in K8s
+  environments
 
 and some external libraries, supported on a "best-effort" basis:
 
 - https://github.com/ztombol/bats-file (still compatible? Requires review)
 - https://github.com/ztombol/bats-docs (still relevant? Requires review)
 - https://github.com/grayhemp/bats-mock (as per #147)
-- https://github.com/jasonkarns/bats-mock (how is this different from grayhemp/bats-mock?)
+- https://github.com/jasonkarns/bats-mock (how is this different from
+  grayhemp/bats-mock?)
 
 ## Testing
 
 ```sh
 bin/bats --tap test
 ```
+
 See also the [CI](.travis.yml) settings for the current test environment and
 scripts.
 
 ## Support
 
-The Bats source code repository is [hosted on
-GitHub](https://github.com/bats-core/bats-core). There you can file bugs on the
-issue tracker or submit tested pull requests for review.
+The Bats source code repository is
+[hosted on GitHub](https://github.com/bats-core/bats-core). There you can file
+bugs on the issue tracker or submit tested pull requests for review.
 
-For real-world examples from open-source projects using Bats, see [Projects
-Using Bats](https://github.com/bats-core/bats-core/wiki/Projects-Using-Bats) on
-the wiki.
+For real-world examples from open-source projects using Bats, see
+[Projects Using Bats](https://github.com/bats-core/bats-core/wiki/Projects-Using-Bats)
+on the wiki.
 
-To learn how to set up your editor for Bats syntax highlighting, see [Syntax
-Highlighting](https://github.com/bats-core/bats-core/wiki/Syntax-Highlighting)
+To learn how to set up your editor for Bats syntax highlighting, see
+[Syntax Highlighting](https://github.com/bats-core/bats-core/wiki/Syntax-Highlighting)
 on the wiki.
 
 ## Contributing
 
-For now see the ``docs`` folder for project guides, work with us on the wiki
-or look at the other communication channels.
+For now see the `docs` folder for project guides, work with us on the wiki or
+look at the other communication channels.
 
 ## Contact
 
@@ -556,17 +565,23 @@ See `docs/CHANGELOG.md`.
 ### What's the plan and why?
 
 **Tuesday, September 19, 2017:** This was forked from [Bats][bats-orig] at
-commit [0360811][].  It was created via `git clone --bare` and `git push
---mirror`. See the [Background](#background) section above for more information.
+commit [0360811][]. It was created via `git clone --bare` and
+`git push --mirror`. See the [Background](#background) section above for more
+information.
 
 [bats-orig]: https://github.com/sstephenson/bats
-[0360811]: https://github.com/sstephenson/bats/commit/03608115df2071fff4eaaff1605768c275e5f81f
+[0360811]:
+  https://github.com/sstephenson/bats/commit/03608115df2071fff4eaaff1605768c275e5f81f
 
-This [bats-core repo](https://github.com/bats-core/bats-core) is the community-maintained Bats project.
+This [bats-core repo](https://github.com/bats-core/bats-core) is the
+community-maintained Bats project.
 
 ### Why was this fork created?
 
-There was an initial [call for maintainers][call-maintain] for the original Bats repository, but write access to it could not be obtained. With development activity stalled, this fork allowed ongoing maintenance and forward progress for Bats.
+There was an initial [call for maintainers][call-maintain] for the original Bats
+repository, but write access to it could not be obtained. With development
+activity stalled, this fork allowed ongoing maintenance and forward progress for
+Bats.
 
 [call-maintain]: https://github.com/sstephenson/bats/issues/150
 
@@ -581,4 +596,5 @@ Bats is released under an MIT-style license; see `LICENSE.md` for details.
 See the [parent project](https://github.com/bats-core) at GitHub or the
 [AUTHORS](AUTHORS) file for the current project maintainer team.
 
-[gitter]: https://gitter.im/bats-core/bats-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[gitter]:
+  https://gitter.im/bats-core/bats-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
