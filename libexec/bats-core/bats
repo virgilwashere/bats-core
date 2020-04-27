@@ -227,7 +227,7 @@ fi
 
 if [[ -n "$output" ]]; then
   if [[ ! -w "${output}" ]]; then
-    abort "Output path ${output} is not writeable"
+    abort "Output path $output is not writeable"
   fi
   export BATS_REPORT_OUTPUT_PATH="$output"
 fi
@@ -257,4 +257,4 @@ done
 source "$BATS_ROOT/lib/bats-core/validator.bash"
 
 set -o pipefail execfail
-exec bats-exec-suite "${flags[@]}" "${filenames[@]}" | bats_test_count_validator | "bats-format-${formatter}" "${formatter_flags[@]}"
+exec bats-exec-suite "${flags[@]}" "${filenames[@]}" | bats_test_count_validator | "bats-format-$formatter" "${formatter_flags[@]}"

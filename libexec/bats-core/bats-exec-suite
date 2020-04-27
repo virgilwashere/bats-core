@@ -48,19 +48,19 @@ if (type -p parallel &>/dev/null); then
   # shellcheck disable=SC2034
   have_gnu_parallel=1
 elif [[ "$num_jobs" != 1 ]]; then
-  abort "Cannot execute \"${num_jobs}\" jobs without GNU parallel"
+  abort "Cannot execute \"$num_jobs\" jobs without GNU parallel"
   exit 1
 fi
 
 trap 'kill 0; exit 1' INT
 
 # create a file that contains all (filtered) tests to run from all files
-TESTS_LIST_FILE="${BATS_RUN_TMPDIR}/test_list_file.txt"
+TESTS_LIST_FILE="$BATS_RUN_TMPDIR/test_list_file.txt"
 
 all_tests=()
 for filename in "$@"; do
   if [[ ! -f "$filename" ]]; then
-    abort "Test file \"${filename}\" does not exist"
+    abort "Test file \"$filename\" does not exist"
   fi
 
   test_names=()
@@ -82,19 +82,19 @@ for filename in "$@"; do
   done < <(BATS_TEST_FILTER="$filter" bats-preprocess "$filename")
 
   if [[ "${#test_dupes[@]}" -ne 0 ]]; then
-    abort "Duplicate test name(s) in file \"${filename}\": ${test_dupes[*]}"
+    abort "Duplicate test name(s) in file \"$filename\": ${test_dupes[*]}"
   fi
 done
 
 test_count="${#all_tests[@]}"
 
 if [[ -n "$count_only_flag" ]]; then
-  printf '%d\n' "${test_count}"
+  printf '%d\n' "$test_count"
   exit
 fi
 
 status=0
-printf '1..%d\n' "${test_count}"
+printf '1..%d\n' "$test_count"
 
 # No point on continuing if there's no tests.
 if [[ "${test_count}" == 0 ]]; then
@@ -107,7 +107,7 @@ if [[ "$num_jobs" -gt 1 ]]; then
   printf "%s\n" "$@" | parallel "${bats_parallel_args[@]}" --keep-order --jobs "$num_jobs" bats-exec-file "${flags[@]}" {} "$TESTS_LIST_FILE" || status=1
 else
   for filename in "$@"; do
-    bats-exec-file "${flags[@]}" "$filename" "${TESTS_LIST_FILE}" || status=1
+    bats-exec-file "${flags[@]}" "$filename" "$TESTS_LIST_FILE" || status=1
   done
 fi
 

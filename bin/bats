@@ -10,12 +10,12 @@ elif command -v 'readlink' >/dev/null; then
   BATS_READLINK='readlink'
 fi
 
-if ! "${BATS_READLINK}" -m "$0" &>/dev/null; then
+if ! "$BATS_READLINK" -m "$0" &>/dev/null; then
   BATS_REALPATH='realpath'
 fi
 
 resolve_path() {
-  local path_to_bats=$1
+  local path_to_bats="$1"
   local target_path
 
   if [[ -L "${path_to_bats}" ]]; then
@@ -57,7 +57,7 @@ bats_resolve_absolute_root_dir() {
     path_to_bats=$(type -p "$path_to_bats")
   fi
 
-  target_path=$(resolve_path "${path_to_bats}")
+  target_path=$(resolve_path "$path_to_bats")
   if [[ "$target_path" == '.' ]]; then
     target_path="$(resolve_path "$target_path")"
   fi
