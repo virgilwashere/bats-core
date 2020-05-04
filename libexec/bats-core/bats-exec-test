@@ -9,26 +9,26 @@ BATS_EXTENDED_SYNTAX=''
 
 while [[ "$#" -ne 0 ]]; do
   case "$1" in
-  -c)
-    # shellcheck disable=SC2034
-    BATS_COUNT_ONLY=1
-    ;;
-  -f)
-    shift
-    # shellcheck disable=SC2034
-    BATS_TEST_FILTER="$1"
-    ;;
-  -T)
-    BATS_ENABLE_TIMING='-T'
-    BATS_PERFORM_TEST_CMD+=('-T')
-    ;;
-  -x)
-    # shellcheck disable=SC2034
-    BATS_EXTENDED_SYNTAX='-x'
-    ;;
-  *)
-    break
-    ;;
+    -c)
+      # shellcheck disable=SC2034
+      BATS_COUNT_ONLY=1
+      ;;
+    -f)
+      shift
+      # shellcheck disable=SC2034
+      BATS_TEST_FILTER="$1"
+      ;;
+    -T)
+      BATS_ENABLE_TIMING='-T'
+      BATS_PERFORM_TEST_CMD+=('-T')
+      ;;
+    -x)
+      # shellcheck disable=SC2034
+      BATS_EXTENDED_SYNTAX='-x'
+      ;;
+    *)
+      break
+      ;;
   esac
   shift
 done
@@ -52,6 +52,10 @@ source "$BATS_ROOT/lib/bats-core/tracing.bash"
 bats_teardown_trap() {
   bats_error_trap
   local status=0
+  # mark the start of this function to distinguish where skip is called
+  # parameter 1 will signify the reason why this function was called
+  # this is used to identify when this is called as exit trap function
+  BATS_TEARDOWN_STARTED=${1:-1}
   teardown >>"$BATS_OUT" 2>&1 || status="$?"
 
   if [[ $status -eq 0 ]]; then
@@ -95,7 +99,7 @@ bats_exit_trap() {
       BATS_STACK_TRACE=("${BATS_CURRENT_STACK_TRACE[@]}")
       BATS_ERROR_STATUS=1
     fi
-    printf 'not ok %d %s\n' "$BATS_TEST_NUMBER" "${BATS_TEST_DESCRIPTION}${BATS_TEST_TIME}" >&3
+    printf 'not ok %d %s\n' "$BATS_TEST_NUMBER" "$BATS_TEST_DESCRIPTION$BATS_TEST_TIME" >&3
     bats_print_stack_trace "${BATS_STACK_TRACE[@]}" >&3
     bats_print_failed_command >&3
 
@@ -107,7 +111,7 @@ bats_exit_trap() {
     fi
     status=1
   else
-    printf 'ok %d %s%s\n' "$BATS_TEST_NUMBER" "${BATS_TEST_DESCRIPTION}${BATS_TEST_TIME}" \
+    printf 'ok %d %s%s\n' "$BATS_TEST_NUMBER" "$BATS_TEST_DESCRIPTION$BATS_TEST_TIME" \
       "$skipped" >&3
     status=0
   fi
@@ -142,7 +146,8 @@ bats_perform_test() {
   BATS_ERROR_STATUS=
   trap 'bats_debug_trap "$BASH_SOURCE"' DEBUG
   trap 'bats_error_trap' ERR
-  trap 'bats_teardown_trap' EXIT
+  # mark this call as trap call
+  trap 'bats_teardown_trap as-exit-trap' EXIT
 
   "$BATS_TEST_NAME" >>"$BATS_OUT" 2>&1
 
