@@ -123,7 +123,7 @@ bats_file_exit_trap() {
     status=1
   fi
   bats_cleanup_preprocessed_source
-  exit $status
+  exit "$status"
 }
 
 function setup_file() {
@@ -208,4 +208,4 @@ bats_run_setup_file
 bats_run_tests
 bats_run_teardown_file
 
-exit $status
+exit "$status"

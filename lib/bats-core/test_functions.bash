@@ -13,9 +13,9 @@ load() {
   # TODO consider flipping the order here; it would be more consistent
   # and less surprising to look for an exact-match first.
   if [[ -f "${BATS_TEST_DIRNAME}/${file}.bash" ]]; then
-    file="${BATS_TEST_DIRNAME}/${file}.bash"
+    file="$BATS_TEST_DIRNAME/$file.bash"
   elif [[ -f "${BATS_TEST_DIRNAME}/${file}" ]]; then
-    file="${BATS_TEST_DIRNAME}/${file}"
+    file="$BATS_TEST_DIRNAME/$file"
   fi
 
   if [[ ! -f "$file" ]] && ! type -P "$file" >/dev/null; then
@@ -26,7 +26,7 @@ load() {
   # Dynamically loaded user file provided outside of Bats.
   # Note: 'source "$file" || exit' doesn't work on bash3.2.
   # shellcheck disable=SC1090
-  source "${file}"
+  source "$file"
 }
 
 run() {
@@ -39,7 +39,7 @@ run() {
   # shellcheck disable=SC2034
   status="$?"
   # shellcheck disable=SC2034,SC2206
-  IFS=$'\n' lines=($output)
+  IFS=$'\n' lines=("$output")
   IFS="$origIFS"
   set "-$origFlags"
 }
