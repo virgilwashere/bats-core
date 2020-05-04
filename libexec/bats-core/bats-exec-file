@@ -8,27 +8,27 @@ extended_syntax=''
 
 while [[ "$#" -ne 0 ]]; do
   case "$1" in
-  -c) ;;
+    -c) ;;
 
-  -f)
-    shift
-    filter="$1"
-    flags+=('-f' "$filter")
-    ;;
-  -j)
-    shift
-    num_jobs="$1"
-    ;;
-  -T)
-    flags+=('-T')
-    ;;
-  -x)
-    flags+=('-x')
-    extended_syntax=1
-    ;;
-  *)
-    break
-    ;;
+    -f)
+      shift
+      filter="$1"
+      flags+=('-f' "$filter")
+      ;;
+    -j)
+      shift
+      num_jobs="$1"
+      ;;
+    -T)
+      flags+=('-T')
+      ;;
+    -x)
+      flags+=('-x')
+      extended_syntax=1
+      ;;
+    *)
+      break
+      ;;
   esac
   shift
 done
@@ -63,7 +63,7 @@ bats_run_setup_file() {
 
   # these are defined only to avoid errors when referencing undefined variables down the line
   # shellcheck disable=2034
-  BATS_TEST_NAME=      # used in tracing.bash
+  BATS_TEST_NAME= # used in tracing.bash
   # shellcheck disable=2034
   BATS_TEST_COMPLETED= # used in tracing.bash
 

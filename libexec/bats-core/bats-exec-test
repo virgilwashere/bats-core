@@ -9,26 +9,26 @@ BATS_EXTENDED_SYNTAX=''
 
 while [[ "$#" -ne 0 ]]; do
   case "$1" in
-  -c)
-    # shellcheck disable=SC2034
-    BATS_COUNT_ONLY=1
-    ;;
-  -f)
-    shift
-    # shellcheck disable=SC2034
-    BATS_TEST_FILTER="$1"
-    ;;
-  -T)
-    BATS_ENABLE_TIMING='-T'
-    BATS_PERFORM_TEST_CMD+=('-T')
-    ;;
-  -x)
-    # shellcheck disable=SC2034
-    BATS_EXTENDED_SYNTAX='-x'
-    ;;
-  *)
-    break
-    ;;
+    -c)
+      # shellcheck disable=SC2034
+      BATS_COUNT_ONLY=1
+      ;;
+    -f)
+      shift
+      # shellcheck disable=SC2034
+      BATS_TEST_FILTER="$1"
+      ;;
+    -T)
+      BATS_ENABLE_TIMING='-T'
+      BATS_PERFORM_TEST_CMD+=('-T')
+      ;;
+    -x)
+      # shellcheck disable=SC2034
+      BATS_EXTENDED_SYNTAX='-x'
+      ;;
+    *)
+      break
+      ;;
   esac
   shift
 done
